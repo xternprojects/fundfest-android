@@ -19,23 +19,13 @@ import xtern.com.fundfest.dummy.DummyContent;
  */
 public class ProjectListFragment extends ListFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
-    // TODO: Rename and change types of parameters
-    public static ProjectListFragment newInstance(String param1, String param2) {
+    public static ProjectListFragment newInstance(/*TODO add possible parameters*/) {
         ProjectListFragment fragment = new ProjectListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +42,8 @@ public class ProjectListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
         // TODO: Change Adapter to display your content
@@ -68,8 +58,7 @@ public class ProjectListFragment extends ListFragment {
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new ClassCastException(activity.toString()+ " must implement OnFragmentInteractionListener");
         }
     }
 

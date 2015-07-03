@@ -24,6 +24,9 @@ public class MainActivity extends ActionBarActivity implements ProjectListFragme
 
     }
 
+    /**
+     * Adds or 'Places' the list fragment into the activity
+     */
     private void placeListFragment(){
         if(fragmentManager == null){
             Log.e("ERROR", "in Place List Fragement, fragmentManager is null");
@@ -32,7 +35,7 @@ public class MainActivity extends ActionBarActivity implements ProjectListFragme
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        ProjectListFragment fragment = new ProjectListFragment();
+        ProjectListFragment fragment = ProjectListFragment.newInstance();
         transaction.add(R.id.mainViewGroup, fragment);
         transaction.commit();
     }
