@@ -1,17 +1,40 @@
 package xtern.com.fundfest;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ProjectListFragment.OnFragmentInteractionListener {
+
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fragmentManager = getFragmentManager();
+
+        placeListFragment();
+
+    }
+
+    private void placeListFragment(){
+        if(fragmentManager == null){
+            Log.e("ERROR", "in Place List Fragement, fragmentManager is null");
+            return;
+        }
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        ProjectListFragment fragment = new ProjectListFragment();
+        transaction.add(R.id.mainViewGroup, fragment);
+        transaction.commit();
     }
 
     @Override
@@ -34,5 +57,10 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(String id) {
+
     }
 }
