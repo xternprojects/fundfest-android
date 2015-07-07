@@ -1,8 +1,11 @@
 package xtern.com.fundfest;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -14,8 +17,11 @@ import java.util.ArrayList;
 public class ProjectListAdapter extends BaseAdapter {
 
     ArrayList<Project> projectList;
+    LayoutInflater inflater;
 
-    public ProjectListAdapter(ArrayList<Project> list){
+
+    public ProjectListAdapter(ArrayList<Project> list, Context context){
+        inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         projectList = list;
     }
 
@@ -35,7 +41,22 @@ public class ProjectListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view;
+        ProjectHolder holder;
+        if(convertView == null) {
+            view = inflater.inflate(R.layout.project_item, parent, false);
+            holder = new ProjectHolder();
+            holder.name = (TextView)view.findViewById(R.id.projName);
+            view.setTag(holder);
+        } else {
+            view = convertView;
+            holder = (ProjectHolder)view.getTag();
+        }
+
+        Project project = projectList.get(position);
+        holder.name.setText(project.projectName);
+
+        return view;
     }
 }
