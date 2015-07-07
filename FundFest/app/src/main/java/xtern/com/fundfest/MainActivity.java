@@ -2,16 +2,25 @@ package xtern.com.fundfest;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity implements ProjectListFragment.OnFragmentInteractionListener {
 
     FragmentManager fragmentManager;
+    ProjectListFragment projectListFragment;
+    ProjectListAsync listAsync;
+    API api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,24 +28,23 @@ public class MainActivity extends ActionBarActivity implements ProjectListFragme
         setContentView(R.layout.activity_main);
 
         fragmentManager = getFragmentManager();
+        api = new API();
 
-        placeListFragment();
-
+        listAsync = new ProjectListAsync();
+        listAsync.execute();
     }
 
     /**
      * Adds or 'Places' the list fragment into the activity
      */
-    private void placeListFragment(){
+    private void placeListFragment(ArrayList<Project> projectList){
         if(fragmentManager == null){
             Log.e("ERROR", "in Place List Fragement, fragmentManager is null");
             return;
         }
-
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        ProjectListFragment fragment = ProjectListFragment.newInstance();
-        transaction.add(R.id.mainViewGroup, fragment);
+        projectListFragment = ProjectListFragment.newInstance(projectList);
+        transaction.add(R.id.mainViewGroup, projectListFragment);
         transaction.commit();
     }
 
@@ -66,4 +74,31 @@ public class MainActivity extends ActionBarActivity implements ProjectListFragme
     public void onFragmentInteraction(String id) {
 
     }
+
+    public class ProjectListAsync extends AsyncTask<Void,Void,ArrayList<Project>> {
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(MainActivity.this,"Retrieving Projects...","Please Wait...");
+        }
+
+        @Override
+        protected ArrayList<Project> doInBackground(Void... voids) {
+            try {
+                return api.getProjectList();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Project> projects) {
+            placeListFragment(projects);
+            progressDialog.hide();
+        }
+    }
+
 }

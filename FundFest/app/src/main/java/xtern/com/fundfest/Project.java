@@ -1,5 +1,6 @@
 package xtern.com.fundfest;
 
+import android.util.Log;
 import android.util.Pair;
 
 import org.joda.time.DateTime;
@@ -50,14 +51,14 @@ public class Project {
         }
 
         String endDate = object.getJSONObject("endDate").getString("iso");
-        project.endDate = dateParser.parseDateTime(endDate);
+        //project.endDate = dateParser.parseDateTime(endDate);
         String estDelivery = object.getJSONObject("estimatedDelivery").getString("iso");
-        project.estimatedDelivery = dateParser.parseDateTime(estDelivery);
+        //project.estimatedDelivery = dateParser.parseDateTime(estDelivery);
 
         project.funded = object.getInt("funded");
         JSONArray owners = object.getJSONArray("owners");
         for(int i = 0; i < owners.length(); i++){
-            String owner = backers.getJSONObject(i).getString("name");
+            String owner = owners.getJSONObject(i).getString("name");
             project.owners.add(owner);
         }
 
@@ -65,19 +66,25 @@ public class Project {
         project.projectDescription = object.getString("projectDescription");
         project.projectName = object.getString("projectName");
         project.projectID = object.getString("objectId");
-        project.createdAt = dateParser.parseDateTime(object.getString("createdAt"));
-        project.updatedAt = dateParser.parseDateTime(object.getString("updatedAt"));
+//        project.createdAt = dateParser.parseDateTime(object.getString("createdAt"));
+//        project.updatedAt = dateParser.parseDateTime(object.getString("updatedAt"));
 
         return project;
     }
 
-    public static Project newInstance(String jsonString) throws JSONException{
-        return Project.newInstance(new JSONObject(jsonString));
+    public static ArrayList<Project> newList(JSONArray jsonArray) throws JSONException{
+        ArrayList<Project> list = new ArrayList<>();
+        for(int i = 0; i < jsonArray.length(); i++){
+            list.add(newInstance(jsonArray.getJSONObject(i)));
+        }
+        return list;
     }
 
-    public static Project newInstance(JSONArray jsonArray) throws JSONException{
-        return Project.newInstance(jsonArray.getJSONObject(0));
+    public static ArrayList<Project> newList(String jsonString) throws JSONException{
+        return newList(new JSONArray(jsonString));
     }
+
+
 
     public Project(){
         backers = new ArrayList<>();

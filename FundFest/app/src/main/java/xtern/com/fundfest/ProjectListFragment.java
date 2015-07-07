@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
+import java.util.ArrayList;
+
 import xtern.com.fundfest.dummy.DummyContent;
 
 /**
@@ -17,15 +19,17 @@ import xtern.com.fundfest.dummy.DummyContent;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
+
 public class ProjectListFragment extends ListFragment {
 
     private OnFragmentInteractionListener mListener;
+    private ArrayList<Project> projectList;
+    private static final String PROJECTS = "PROJECTS";
 
-    public static ProjectListFragment newInstance(/*TODO add possible parameters*/) {
+    public static ProjectListFragment newInstance(ArrayList<Project> projectList) {
         ProjectListFragment fragment = new ProjectListFragment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(PROJECTS,projectList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,13 +46,12 @@ public class ProjectListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
+            projectList = (ArrayList<Project>)getArguments().getSerializable(PROJECTS);
         }
 
         // TODO: Change Adapter to display your content
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
+        setListAdapter(new ArrayAdapter<Project>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, projectList));
     }
 
 
