@@ -11,14 +11,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity implements ProjectListFragment.OnFragmentInteractionListener {
+public class MainActivity extends ActionBarActivity implements OnFragmentInteractionListener, OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     FragmentManager fragmentManager;
     ProjectListFragment projectListFragment;
+    MapFragment mapFragment;
+    GoogleApiClient googleApiClient;
     ProjectListAsync listAsync;
     API api;
 
@@ -30,8 +40,16 @@ public class MainActivity extends ActionBarActivity implements ProjectListFragme
         fragmentManager = getFragmentManager();
         api = new API();
 
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
         listAsync = new ProjectListAsync();
-        listAsync.execute();
+        //listAsync.execute();
+
+        placeMapFragment();
     }
 
     /**
@@ -42,10 +60,19 @@ public class MainActivity extends ActionBarActivity implements ProjectListFragme
             Log.e("ERROR", "in Place List Fragement, fragmentManager is null");
             return;
         }
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
         projectListFragment = ProjectListFragment.newInstance(projectList);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.mainViewGroup, projectListFragment);
         transaction.commit();
+    }
+
+    private void placeMapFragment(){
+        if(mapFragment == null)
+            mapFragment = MapFragment.newInstance();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.mainViewGroup, mapFragment);
+        transaction.commit();
+        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -75,6 +102,26 @@ public class MainActivity extends ActionBarActivity implements ProjectListFragme
 
     }
 
+    @Override
+    public void onMapReady(GoogleMap map) {
+        map.setMyLocationEnabled(true);
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        // TODO - check to make sure the phone can connect
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        // TODO
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        // TODO
+    }
+
     public class ProjectListAsync extends AsyncTask<Void,Void,ArrayList<Project>> {
 
         ProgressDialog progressDialog;
@@ -100,5 +147,6 @@ public class MainActivity extends ActionBarActivity implements ProjectListFragme
             progressDialog.hide();
         }
     }
+
 
 }
