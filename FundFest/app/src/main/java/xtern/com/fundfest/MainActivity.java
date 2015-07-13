@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
+import com.facebook.FacebookSdk;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -26,7 +27,9 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     FragmentManager fragmentManager;
+    android.support.v4.app.FragmentManager supportFragmentManager;
     ProjectListFragment projectListFragment;
+    LogInFragment logInFragment;
     MapFragment mapFragment;
     GoogleApiClient googleApiClient;
     ProjectListAsync listAsync;
@@ -35,9 +38,11 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
         fragmentManager = getFragmentManager();
+        supportFragmentManager = getSupportFragmentManager();
         api = new API();
 
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -49,7 +54,8 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
         listAsync = new ProjectListAsync();
         //listAsync.execute();
 
-        placeMapFragment();
+        //placeMapFragment();
+        placeLoginFragment();
     }
 
     /**
@@ -73,6 +79,14 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
         transaction.add(R.id.mainViewGroup, mapFragment);
         transaction.commit();
         mapFragment.getMapAsync(this);
+    }
+
+    private void placeLoginFragment(){
+        if(logInFragment == null)
+            logInFragment = LogInFragment.newInstance();
+        android.support.v4.app.FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+        transaction.add(R.id.mainViewGroup, logInFragment);
+        transaction.commit();
     }
 
     @Override
