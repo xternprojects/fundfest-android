@@ -2,7 +2,7 @@ package xtern.com.fundfest;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.ListFragment;
+import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
@@ -31,6 +31,10 @@ public class ProjectListFragment extends ListFragment {
         return fragment;
     }
 
+    public static ProjectListFragment newInstance(){
+        return new ProjectListFragment();
+    }
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -42,9 +46,8 @@ public class ProjectListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            projectList = (ArrayList<Project>)getArguments().getSerializable(PROJECTS);
-        }
+        if (getArguments() != null) projectList = (ArrayList<Project>)getArguments().getSerializable(PROJECTS);
+        else projectList = new ArrayList<>();
 
         setListAdapter(new ProjectListAdapter(projectList,getActivity()));
     }
