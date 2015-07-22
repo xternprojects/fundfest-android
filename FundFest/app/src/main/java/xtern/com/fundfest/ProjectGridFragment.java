@@ -31,6 +31,7 @@ public class ProjectGridFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             projectList = (ArrayList<Project>)getArguments().getSerializable(PROJECTS);
