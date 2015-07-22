@@ -1,7 +1,6 @@
-package xtern.com.fundfest;
+package xtern.com.fundfest.Fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,9 +10,14 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 
+import xtern.com.fundfest.Adapters.ProjectListAdapter;
+import xtern.com.fundfest.DataObjects.Project;
+import xtern.com.fundfest.Listeners.OnFragmentInteractionListener;
+import xtern.com.fundfest.R;
+
 
 public class ProjectGridFragment extends Fragment {
-    private xtern.com.fundfest.OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mListener;
     private ArrayList<Project> projectList;
     private static final String PROJECTS = "PROJECTS";
     private GridView gridView;

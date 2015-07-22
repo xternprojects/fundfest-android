@@ -1,4 +1,4 @@
-package xtern.com.fundfest;
+package xtern.com.fundfest.Listeners;
 
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
@@ -10,7 +10,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
     DrawerLayout drawerLayout;
     ListView drawerList;
 
-    DrawerItemClickListener(DrawerLayout drawerLayout, ListView drawerList){
+    public DrawerItemClickListener(DrawerLayout drawerLayout, ListView drawerList){
         this.drawerLayout = drawerLayout;
         this.drawerList = drawerList;
     }

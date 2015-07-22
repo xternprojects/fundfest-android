@@ -1,4 +1,4 @@
-package xtern.com.fundfest;
+package xtern.com.fundfest.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import xtern.com.fundfest.DataObjects.Project;
+import xtern.com.fundfest.R;
+
 /**
  * Created by sean.phillips on 7/6/15.
  * The List adapter used for the project list.
@@ -18,7 +21,6 @@ public class ProjectListAdapter extends BaseAdapter {
 
     ArrayList<Project> projectList;
     LayoutInflater inflater;
-
 
     public ProjectListAdapter(ArrayList<Project> list, Context context){
         inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
@@ -55,8 +57,12 @@ public class ProjectListAdapter extends BaseAdapter {
         }
 
         Project project = projectList.get(position);
-        holder.name.setText(project.projectName);
+        holder.name.setText(project.title);
 
         return view;
+    }
+
+    public class ProjectHolder{
+        public TextView name;
     }
 }

@@ -1,4 +1,4 @@
-package xtern.com.fundfest;
+package xtern.com.fundfest.Fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,6 +8,10 @@ import android.widget.ListView;
 
 
 import java.util.ArrayList;
+
+import xtern.com.fundfest.Adapters.ProjectListAdapter;
+import xtern.com.fundfest.DataObjects.Project;
+import xtern.com.fundfest.Listeners.OnFragmentInteractionListener;
 
 /**
  * A fragment representing a list of Items.

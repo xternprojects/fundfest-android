@@ -1,4 +1,4 @@
-package xtern.com.fundfest;
+package xtern.com.fundfest.Fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import xtern.com.fundfest.Listeners.OnFragmentInteractionListener;
+import xtern.com.fundfest.R;
 
 
 public class CategoryFragment extends Fragment {

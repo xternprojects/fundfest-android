@@ -1,4 +1,4 @@
-package xtern.com.fundfest;
+package xtern.com.fundfest.Listeners;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -10,7 +10,7 @@ public class PageChangeListener implements ViewPager.OnPageChangeListener {
 
     ActionBarActivity activity;
 
-    PageChangeListener(ActionBarActivity activity){
+    public PageChangeListener(ActionBarActivity activity){
         this.activity = activity;
     }
 

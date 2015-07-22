@@ -1,4 +1,4 @@
-package xtern.com.fundfest;
+package xtern.com.fundfest.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +15,9 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import xtern.com.fundfest.Listeners.OnFragmentInteractionListener;
+import xtern.com.fundfest.R;
 
 
 public class LogInFragment extends Fragment {

@@ -1,18 +1,19 @@
-package xtern.com.fundfest;
+package xtern.com.fundfest.Activities;
 
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.facebook.FacebookSdk;
@@ -24,6 +25,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 
 import java.util.ArrayList;
+
+import xtern.com.fundfest.API;
+import xtern.com.fundfest.Adapters.TabAdapter;
+import xtern.com.fundfest.DataObjects.Project;
+import xtern.com.fundfest.Adapters.DrawerAdapter;
+import xtern.com.fundfest.Listeners.DrawerItemClickListener;
+import xtern.com.fundfest.Fragments.LogInFragment;
+import xtern.com.fundfest.Listeners.OnFragmentInteractionListener;
+import xtern.com.fundfest.Listeners.PageChangeListener;
+import xtern.com.fundfest.Fragments.ProjectListFragment;
+import xtern.com.fundfest.R;
+import xtern.com.fundfest.Listeners.TabListener;
 
 
 public class MainActivity extends ActionBarActivity implements OnFragmentInteractionListener, OnMapReadyCallback,
@@ -56,7 +69,9 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
         drawerLayout = (DrawerLayout) findViewById(R.id.mainViewGroup);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, drawerItems));
+
+
+        drawerList.setAdapter(new DrawerAdapter(drawerItems, this));
         drawerList.setOnItemClickListener(new DrawerItemClickListener(drawerLayout, drawerList));
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_menu_white_24dp, R.string.openDesc, R.string.closeDesc);
@@ -125,6 +140,11 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        // Configure the search info and add any event listeners
+
         return true;
     }
 
@@ -153,12 +173,12 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
         outState.putInt("tab", getSupportActionBar().getSelectedNavigationIndex());
     }
 
-    //need to call invalidateOptionsMenu first
+    //need to call invalidateOptionsMenu first fo this to happen
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
-        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+        menu.findItem(R.id.action_search).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -211,8 +231,8 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
 
         @Override
         protected ArrayList<Project> doInBackground(Void... voids) {
-            try {return api.getProjectList();}
-            catch (Exception e){e.printStackTrace();}
+//            try {return api.getProjectList();}
+//            catch (Exception e){e.printStackTrace();}
             return null; //if failed
         }
 
