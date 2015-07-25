@@ -1,12 +1,10 @@
 package xtern.com.fundfest.Adapters;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 
+import xtern.com.fundfest.Activities.MainActivity;
 import xtern.com.fundfest.Fragments.CategoryFragment;
 import xtern.com.fundfest.Fragments.ProjectListFragment;
 
@@ -16,21 +14,16 @@ import xtern.com.fundfest.Fragments.ProjectListFragment;
  */
 public class TabAdapter extends FragmentPagerAdapter {
 
-    private Context context;
-    private ActionBar actionBar;
-
     FragmentManager manager;
 
-    public TabAdapter(ActionBarActivity activity){
+    public TabAdapter(MainActivity activity){
         super(activity.getSupportFragmentManager());
-        context = activity;
-        actionBar = activity.getSupportActionBar();
         manager = activity.getSupportFragmentManager();
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override

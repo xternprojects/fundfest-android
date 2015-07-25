@@ -3,61 +3,50 @@ package xtern.com.fundfest.Activities;
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.design.widget.NavigationView;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 import com.facebook.FacebookSdk;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
 import xtern.com.fundfest.API;
-import xtern.com.fundfest.Adapters.TabAdapter;
 import xtern.com.fundfest.DataObjects.Project;
-import xtern.com.fundfest.Adapters.DrawerAdapter;
-import xtern.com.fundfest.Listeners.DrawerItemClickListener;
+import xtern.com.fundfest.Fragments.ProjectDisplayFragment;
 import xtern.com.fundfest.Fragments.LogInFragment;
 import xtern.com.fundfest.Listeners.OnFragmentInteractionListener;
-import xtern.com.fundfest.Listeners.PageChangeListener;
 import xtern.com.fundfest.Fragments.ProjectListFragment;
+import xtern.com.fundfest.Listeners.OnNavigationClickListener;
 import xtern.com.fundfest.R;
-import xtern.com.fundfest.Listeners.TabListener;
 
-
-public class MainActivity extends ActionBarActivity implements OnFragmentInteractionListener, OnMapReadyCallback,
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     ProjectListFragment projectListFragment;
     LogInFragment logInFragment;
-    SupportMapFragment mapFragment;
     GoogleApiClient googleApiClient;
     ProjectListAsync listAsync;
     API api = new API();
 
-    ViewPager pager;
-    TabAdapter tabAdapter;
-    TabListener tabListener;
-    ActionBar bar;
-
     DrawerLayout drawerLayout;
-    ListView drawerList;
     ActionBarDrawerToggle drawerToggle;
-    String[] drawerItems = {"Map","Settings","Log In"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,31 +56,15 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
         setContentView(R.layout.activity_main);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.mainViewGroup);
-        drawerList = (ListView) findViewById(R.id.left_drawer);
 
-
-
-        drawerList.setAdapter(new DrawerAdapter(drawerItems, this));
-        drawerList.setOnItemClickListener(new DrawerItemClickListener(drawerLayout, drawerList));
-
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_menu_white_24dp, R.string.openDesc, R.string.closeDesc);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.openDesc, R.string.closeDesc);
         drawerLayout.setDrawerListener(drawerToggle);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        // initialize the view pager and adapter
-        pager = (ViewPager)findViewById(R.id.pager);
-        tabListener = new TabListener(pager);
-
-        bar = getSupportActionBar();
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        bar.addTab(bar.newTab().setText("List").setTabListener(tabListener));
-        bar.addTab(bar.newTab().setText("Category").setTabListener(tabListener));
-
-        tabAdapter = new TabAdapter(this);
-
-        pager.setAdapter(tabAdapter);
-        pager.setOnPageChangeListener(new PageChangeListener(this));
+        ((NavigationView)findViewById(R.id.navigationView))
+                .setNavigationItemSelectedListener(new OnNavigationClickListener(drawerLayout, this));
 
         // initialize the googleClient
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -103,8 +76,12 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
         // asynchronously populate the list
         listAsync = new ProjectListAsync();
 
+        //add initial display fragment
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.fragmentParent, ProjectDisplayFragment.newInstance());
+        transaction.commit();
+
         //listAsync.execute();
-        //placeMapFragment();
         //placeLoginFragment();
     }
 
@@ -116,16 +93,7 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.mainViewGroup, projectListFragment);
         transaction.commit();
-        pager.setAdapter(tabAdapter);
-    }
-
-    private void placeMapFragment(){
-        if(mapFragment == null)
-            mapFragment = SupportMapFragment.newInstance();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.mainViewGroup, mapFragment);
-        transaction.commit();
-        mapFragment.getMapAsync(this);
+        //pager.setAdapter(tabAdapter);
     }
 
     private void placeLoginFragment(){
@@ -170,15 +138,14 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("tab", getSupportActionBar().getSelectedNavigationIndex());
     }
 
     //need to call invalidateOptionsMenu first fo this to happen
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
-        menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+        //boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
+        //menu.findItem(R.id.action_search).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -198,11 +165,6 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
     @Override
     public void onFragmentInteraction(String id) {
 
-    }
-
-    @Override
-    public void onMapReady(GoogleMap map) {
-        map.setMyLocationEnabled(true);
     }
 
     @Override

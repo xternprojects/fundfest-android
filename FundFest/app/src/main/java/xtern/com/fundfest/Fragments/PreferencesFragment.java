@@ -1,6 +1,5 @@
 package xtern.com.fundfest.Fragments;
 
-
 import android.os.Bundle;
 import android.app.Fragment;
 import android.preference.PreferenceFragment;
@@ -11,10 +10,6 @@ import android.widget.TextView;
 
 import xtern.com.fundfest.R;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class PreferencesFragment extends PreferenceFragment{
 
     @Override

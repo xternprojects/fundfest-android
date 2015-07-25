@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Categories">
+        <menu>
+            <item
+                android:id="@+id/projects_item"
+                android:title="@string/projects"/>
+            <item
+                android:id="@+id/schedule_item"
+                android:title="@string/schedule"/>
+            <item
+                android:id="@+id/map_item"
+                android:title="@string/map"/>
+            <item
+                android:id="@+id/events_item"
+                android:title="@string/events"/>
+            <item
+                android:id="@+id/about_us_item"
+                android:title="@string/about_us"/>
+        </menu>
+    </item>
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/preferences_item"
+                android:title="@string/preferences"/>
+            <item
+                android:id="@+id/log_in_item"
+                android:title="@string/log_in"/>
+        </menu>
+    </item>
+
+</menu>
