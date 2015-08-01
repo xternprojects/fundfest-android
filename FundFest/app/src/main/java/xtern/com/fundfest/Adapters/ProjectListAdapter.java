@@ -57,7 +57,7 @@ public class ProjectListAdapter extends BaseAdapter {
         }
 
         Project project = projectList.get(position);
-        holder.name.setText(project.title);
+        holder.name.setText(project.projectName);
 
         return view;
     }

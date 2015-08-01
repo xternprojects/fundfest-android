@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     ProjectListFragment projectListFragment;
     LogInFragment logInFragment;
     GoogleApiClient googleApiClient;
-    ProjectListAsync listAsync;
     API api = new API();
 
     DrawerLayout drawerLayout;
@@ -73,9 +72,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        // asynchronously populate the list
-        listAsync = new ProjectListAsync();
-
         //add initial display fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fragmentParent, ProjectDisplayFragment.newInstance());
@@ -83,25 +79,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         //listAsync.execute();
         //placeLoginFragment();
-    }
-
-    /**
-     * Adds or 'Places' the list fragment into the activity
-     */
-    private void placeListFragment(ArrayList<Project> projectList){
-        projectListFragment = ProjectListFragment.newInstance(projectList);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.mainViewGroup, projectListFragment);
-        transaction.commit();
-        //pager.setAdapter(tabAdapter);
-    }
-
-    private void placeLoginFragment(){
-        if(logInFragment == null)
-            logInFragment = LogInFragment.newInstance();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.mainViewGroup, logInFragment);
-        transaction.commit();
     }
 
     @Override
@@ -182,28 +159,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         // TODO
     }
 
-    public class ProjectListAsync extends AsyncTask<Void,Void,ArrayList<Project>> {
 
-        ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            progressDialog = ProgressDialog.show(MainActivity.this,"Retrieving Projects...","Please Wait...");
-        }
-
-        @Override
-        protected ArrayList<Project> doInBackground(Void... voids) {
-//            try {return api.getProjectList();}
-//            catch (Exception e){e.printStackTrace();}
-            return null; //if failed
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Project> projects) {
-            placeListFragment(projects);
-            progressDialog.hide();
-        }
-    }
 
 
 }
