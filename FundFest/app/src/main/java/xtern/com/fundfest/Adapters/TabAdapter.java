@@ -3,6 +3,7 @@ package xtern.com.fundfest.Adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import xtern.com.fundfest.Activities.MainActivity;
 import xtern.com.fundfest.Fragments.CategoryFragment;
@@ -12,7 +13,7 @@ import xtern.com.fundfest.Fragments.ProjectListFragment;
  * Created by sean.phillips on 7/17/15.
  * Adapter for the Main view's tabs
  */
-public class TabAdapter extends FragmentPagerAdapter {
+public class TabAdapter extends FragmentStatePagerAdapter {
 
     FragmentManager manager;
 

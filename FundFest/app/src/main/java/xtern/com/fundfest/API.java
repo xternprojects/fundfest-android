@@ -27,7 +27,7 @@ public class API {
 
     public ArrayList<Project> getProjects() throws Exception{
         Request request = new Request.Builder()
-                .url("http://fundfest-backend.herokuapp.com/projects")
+                .url("http://makeindyserver.herokuapp.com/projects")
                 .build();
 
         Response response = client.newCall(request).execute();

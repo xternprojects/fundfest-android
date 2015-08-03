@@ -1,12 +1,12 @@
 package xtern.com.fundfest.Fragments;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,24 +22,16 @@ import xtern.com.fundfest.R;
 public class ProjectListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private static final String PROJECTS = "PROJECTS";
     private API api;
     private ProjectRecyclerAdapter adapter;
     RecyclerView recyclerView;
     ProjectListAsync projectAsync;
 
-//    public static ProjectListFragment newInstance(ArrayList<Project> projectList) {
-//        ProjectListFragment fragment = new ProjectListFragment();
-//        Bundle args = new Bundle();
-//        args.putSerializable(PROJECTS,projectList);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
     public static ProjectListFragment newInstance(){
         ProjectListFragment fragment = new ProjectListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+        Log.e("Hey","List got created");
         return fragment;
     }
 
@@ -73,7 +65,7 @@ public class ProjectListFragment extends Fragment {
 
         adapter = new ProjectRecyclerAdapter(new ArrayList<Project>());
         recyclerView.setAdapter(adapter);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
     @Override
@@ -111,11 +103,9 @@ public class ProjectListFragment extends Fragment {
 
     public class ProjectListAsync extends AsyncTask<Void,Void,ArrayList<Project>> {
 
-        ProgressDialog progressDialog;
-
         @Override
         protected void onPreExecute() {
-            //progressDialog = ProgressDialog.show(MainActivity.this,"Retrieving Projects...","Please Wait...");
+
         }
 
         @Override
@@ -127,8 +117,8 @@ public class ProjectListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ArrayList<Project> projects) {
+            Log.e("ehwat u got", projects.get(0).title);
             adapter.changeDataSet(projects);
-            //progressDialog.hide();
         }
     }
 }

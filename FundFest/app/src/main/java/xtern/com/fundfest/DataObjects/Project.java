@@ -19,30 +19,18 @@ import java.util.List;
  */
 public class Project {
 
-    //TODO what ben said it shall be it
-//    public String title;
-//    public String description;
+    public String categoryId;
+    public String description;
+    public String facebookURL;
+    public String kickStarterURL;
+    public String location;
+    public String title;
+    public String twitterURL;
+    public int voteCount;
+    public String objectId;
 //    public String[] pics;
 //    public String[] vids;
-//    public int voteCount;
-//    public String kickStarter;
-//    public String facebook;
-//    public String twitter;
-//    public String categoryId;
-//    public String id;
-//    public Location location;
 
-    // What It actually is
-    public List<Pair<Integer,String>> backers;
-    public List<String> owners;
-    public DateTime endDate; //TODO : needs to be explained further
-    public DateTime estimatedDelivery; //TODO : Same as above
-    public String category;
-    public int funded; //TODO : fuck all of this need to be explained
-    public int pledged;
-    public String projectDescription;
-    public String projectName;
-    public String projectID; //TODO objectID?
 
     //TODO : make a json stream reader (?) possibly to be done later
 
@@ -52,33 +40,16 @@ public class Project {
      */
     public static Project newInstance(JSONObject object) throws JSONException{
         Project project = new Project();
-        DateTimeFormatter dateParser = ISODateTimeFormat.dateTimeNoMillis();
 
-        JSONArray backers = object.getJSONArray("backers");
-        for(int i = 0; i < backers.length(); i++){
-            JSONObject pledger = backers.getJSONObject(i);
-            Integer amount = pledger.getInt("amountPledged");
-            String userID = pledger.getString("name");
-            project.backers.add(new Pair<>(amount,userID));
-        }
-
-        project.category = object.getString("category");
-
-        String endDate = object.getJSONObject("endDate").getString("iso");
-        //project.endDate = dateParser.parseDateTime(endDate);
-        String estDelivery = object.getJSONObject("estimatedDelivery").getString("iso");
-        //project.estimatedDelivery = dateParser.parseDateTime(estDelivery);
-
-        project.funded = object.getInt("funded");
-        JSONArray owners = object.getJSONArray("owners");
-        for(int i = 0; i < owners.length(); i++){
-            project.owners.add(owners.getString(i));
-        }
-
-        project.pledged = object.getInt("pledged");
-        project.projectDescription = object.getString("projectDescription");
-        project.projectName = object.getString("projectName");
-        project.projectID = object.getString("objectId");
+        project.categoryId = object.getString("categoryId");
+        project.description = object.getString("description");
+        project.facebookURL = object.getString("facebookURL");
+        project.kickStarterURL = object.getString("kickstarterURL");
+        project.location = object.getString("location");
+        project.title = object.getString("title");
+        project.twitterURL = object.getString("twitterURL");
+        project.voteCount = object.getInt("voteCount");
+        project.objectId = object.getString("objectId");
 
         return project;
     }
@@ -95,11 +66,8 @@ public class Project {
         return newList(new JSONArray(jsonString));
     }
 
-
-
-    public Project(){
-        backers = new ArrayList<>();
-        owners = new ArrayList<>();
+    public static Project getProject(JSONArray jsonArray) throws  JSONException{
+        return newInstance(jsonArray.getJSONObject(0));
     }
 
 }

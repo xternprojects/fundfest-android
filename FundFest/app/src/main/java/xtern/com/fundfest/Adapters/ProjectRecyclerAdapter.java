@@ -1,6 +1,7 @@
 package xtern.com.fundfest.Adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,10 +22,10 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        TextView v = (TextView)LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.my_text_view, parent, false);
+        TextView v = (TextView)LayoutInflater.from(parent.getContext()).inflate(R.layout.my_text_view, parent, false);
         // set the view's size, margins, paddings and layout parameters
         //...
+        Log.e("Creating a ","Viewholder");
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -36,7 +37,7 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
 
     public void changeDataSet(ArrayList<Project> newSet){
         dataset = newSet;
-        this.notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -44,7 +45,7 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(dataset.get(position).projectName);
+        holder.mTextView.setText(dataset.get(position).title);
 
     }
 
@@ -54,8 +55,6 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
-
-
 
         public ViewHolder(TextView v) {
             super(v);
