@@ -1,8 +1,10 @@
 package xtern.com.fundfest.Adapters;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -22,7 +24,19 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        TextView v = (TextView)LayoutInflater.from(parent.getContext()).inflate(R.layout.my_text_view, parent, false);
+        CardView v = (CardView)LayoutInflater.from(parent.getContext()).inflate(R.layout.project_cards, parent, false);
+        v.findViewById(R.id.votes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("Clickin", "HEARTS");
+            }
+        });
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("Clickin", "BASE");
+            }
+        });
         // set the view's size, margins, paddings and layout parameters
         //...
         Log.e("Creating a ","Viewholder");
@@ -45,7 +59,10 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(dataset.get(position).title);
+        Project project = dataset.get(position);
+        CardView card = holder.projectCard;//.setText(dataset.get(position).title);
+        ((TextView)card.findViewById(R.id.title)).setText(project.title);
+        ((TextView)card.findViewById(R.id.votes)).setText(Integer.toString(project.voteCount));
 
     }
 
@@ -54,11 +71,12 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter<ProjectRecycler
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextView;
+        public CardView projectCard;
 
-        public ViewHolder(TextView v) {
+        public ViewHolder(CardView v) {
             super(v);
-            mTextView = v;
+            projectCard = v;
+
         }
     }
 }
